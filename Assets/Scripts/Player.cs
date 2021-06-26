@@ -15,9 +15,8 @@ public class Player : MonoBehaviour
         rb2D = GetComponent<Rigidbody2D>();
     }
 
-    void Update()
+    void FixedUpdate()
     {
-        Debug.Log(movement);
         rb2D.AddForce(movement * moveSpeed);
     }
 
