@@ -155,6 +155,7 @@ MonoBehaviour:
   cellSprites:
   - {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
+  treePrefab: {fileID: 7186656515561917445, guid: abdb35f9c7390c64ea44fdc3c0561f98, type: 3}
 --- !u!4 &120518723
 Transform:
   m_ObjectHideFlags: 0

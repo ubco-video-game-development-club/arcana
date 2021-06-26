@@ -6,8 +6,11 @@ public class Chunk : MonoBehaviour
 {
     public const int CHUNK_SIZE_CELLS = 16;
     public const float CHUNK_CELL_SIZE = 1.0f;
+    public const int PSEED_PRIME = 816_887_069;
 
-    [SerializeField] private Sprite[] cellSprites;
+
+	[SerializeField] private Sprite[] cellSprites;
+    [SerializeField] private GameObject treePrefab;
 
     void Start()
     {
@@ -16,8 +19,11 @@ public class Chunk : MonoBehaviour
 
     private void Generate()
     {
-        WorldGenerator wg = GameManager.WorldGenerator;
-        Vector2 chunkPos = transform.position;
+		WorldGenerator wg = GameManager.WorldGenerator;
+		Vector2 chunkPos = transform.position;
+        int pSeed = GeneratePositionalSeed(chunkPos) + wg.Seed;
+        Random.InitState(pSeed);
+
         for(int y = 0; y < CHUNK_SIZE_CELLS; y++)
         {
             for(int x = 0; x < CHUNK_SIZE_CELLS; x++)
@@ -28,11 +34,30 @@ public class Chunk : MonoBehaviour
 				Sprite sprite = cellSprites[index];
 
                 GameObject cellGO = new GameObject($"Cell {x}-{y}");
+                cellGO.transform.parent = transform;
                 cellGO.transform.position = pos;
 
                 Cell cell = cellGO.AddComponent<Cell>();
                 cell.SetSprite(sprite);
+
+                if(Random.value < noise)
+                {
+                    Instantiate(treePrefab, pos, Quaternion.identity, transform);
+                }
             }
         }
+    }
+
+    //This is to generate "random" seeds based on position.
+    private int GeneratePositionalSeed(Vector2 position)
+    {
+        float x = position.x;
+        float y = position.y;
+
+        int wholeX = (int)x;
+        int wholeY = (int)y;
+
+        int seed = wholeX ^ wholeY * (wholeX + wholeY) ^ PSEED_PRIME;
+        return seed;
     }
 }
