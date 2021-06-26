@@ -7,6 +7,8 @@ public class Cell : MonoBehaviour
 {
     public void SetSprite(Sprite sprite)
     {
-        GetComponent<SpriteRenderer>().sprite = sprite;
+        SpriteRenderer renderer = GetComponent<SpriteRenderer>();
+        renderer.sortingLayerName = "Background";
+        renderer.sprite = sprite;
     }
 }
