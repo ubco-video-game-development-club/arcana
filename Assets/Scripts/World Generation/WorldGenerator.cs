@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
+    public int Seed { get => seed; }
+
     [SerializeField] private int seed;
     [SerializeField] private bool generateRandomSeedOnStart = false;
     [SerializeField] private float noiseZoom = 16.0f;
