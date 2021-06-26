@@ -6,9 +6,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public static GameManager Singleton { get; private set; }
+    public static WorldGenerator WorldGenerator { get; private set; }
 
     void Awake()
     {
         Singleton = this;
+        WorldGenerator = GetComponent<WorldGenerator>();
     }
 }
