@@ -25,6 +25,8 @@ public class Player : MonoBehaviour
     {
         otherPlayer = GameManager.GetOtherPlayer(transform);
         maxPlayerDist = Camera.main.orthographicSize * 2 - 2;
+
+        attack.Enabled = true;
     }
 
     void Update()
@@ -64,11 +66,19 @@ public class Player : MonoBehaviour
         // hack cause Unity calls this on prefabs - WTF?
         if (!gameObject.activeInHierarchy) return;
 
-        if (context.started)
+        if (context.started && attack.Enabled)
         {
             animator.SetTrigger("attack");
             attack.Invoke(CreateAttackData());
+            StartCoroutine(AttackCooldown());
         }
+    }
+
+    private IEnumerator AttackCooldown()
+    {
+        attack.Enabled = false;
+        yield return new WaitForSeconds(attack.Cooldown);
+        attack.Enabled = true;
     }
 
     private AttackData CreateAttackData()
