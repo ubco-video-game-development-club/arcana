@@ -9,7 +9,8 @@ public enum PointOfInterestType
     Door,
     Shrine,
     Runestone,
-    COUNT
+    COUNT,
+    SPAWN
 }
 
 public struct PointOfInterest

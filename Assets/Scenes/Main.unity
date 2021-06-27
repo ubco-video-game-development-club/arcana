@@ -412,12 +412,12 @@ MonoBehaviour:
   seed: 0
   generateRandomSeedOnStart: 1
   noiseZoom: 16
-  treeRarity: 2
+  treeRarity: 1
   treeThreshold: 0.2
   maxPoiPerType: 5
   poiSpawnRadius: 500
   pathWidth: 3
-  pathDensity: 0.5
+  pathDensity: 0.9
   chunkPrefab: {fileID: 5599468659421148231, guid: d36facfc9e0e3ae42ada8dde339b742a, type: 3}
 --- !u!4 &1104709123
 Transform:
