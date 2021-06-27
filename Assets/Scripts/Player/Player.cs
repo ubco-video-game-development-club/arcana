@@ -163,7 +163,13 @@ public class Player : MonoBehaviour
         data.origin = transform.position;
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
         data.direction = (mousePos - data.origin).normalized;
-        // TODO: read damage mods from artifacts here
+        foreach (Artifact artifact in artifacts)
+        {
+            data.damageMod += artifact.DamageBonus;
+            data.reachMod += artifact.ReachBonus;
+            data.rangeMod += artifact.RangeBonus;
+            data.knockbackMod += artifact.KnockbackBonus;
+        }
         return data;
     }
 }

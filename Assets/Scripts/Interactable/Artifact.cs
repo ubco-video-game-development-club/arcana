@@ -14,8 +14,8 @@ public class Artifact : ScriptableObject
     [SerializeField] private Sprite hudIcon;
     public Sprite HudIcon { get => hudIcon; }
 
-    [SerializeField] private float damageBonus;
-    public float DamageBonus { get => damageBonus; }
+    [SerializeField] private int damageBonus;
+    public int DamageBonus { get => damageBonus; }
 
     [SerializeField] private float reachBonus;
     public float ReachBonus { get => reachBonus; }
