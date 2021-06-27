@@ -8,10 +8,13 @@ public class WorldGenerator : MonoBehaviour
     private const int CHUNK_SPAWN_RANGE = 2;
 
     public int Seed { get => seed; }
+    private float PerlinOffset => (float)(seed & 4194304); //lowest 22 bits of seed
 
     [SerializeField] private int seed;
     [SerializeField] private bool generateRandomSeedOnStart = false;
     [SerializeField] private float noiseZoom = 16.0f;
+    [SerializeField] private float treeRarity = 5.0f;
+    [SerializeField] private float treeThreshold = 0.5f;
     [SerializeField] private Chunk chunkPrefab;
     private new Transform camera;
     private List<Chunk> chunks = new List<Chunk>();
@@ -56,8 +59,21 @@ public class WorldGenerator : MonoBehaviour
     public float GetNoiseAt(Vector2 position)
     {
         Vector2 nPos = position / noiseZoom;
-        float n = Mathf.PerlinNoise(nPos.x + seed, nPos.y + seed);
+        float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);
         return n;
+    }
+
+    public bool IsTreeHere(float noise)
+    {
+        if(noise < treeThreshold) return false;
+
+        float r = Random.value;
+        if(r * treeRarity < noise)
+        {
+            return true;
+        }
+
+        return false;
     }
 
     //Checks if a chunk is at the specified chunk position

@@ -49,6 +49,8 @@ public class Chunk : MonoBehaviour
                 int index = Mathf.RoundToInt(noise * (cellSprites.Length - 1));
 				Sprite sprite = cellSprites[index];
 
+                Debug.Log($"{x}, {y} :: {noise}");
+
                 GameObject cellGO = new GameObject($"Cell {x}-{y}");
                 cellGO.transform.parent = transform;
                 cellGO.transform.position = pos;
@@ -56,7 +58,7 @@ public class Chunk : MonoBehaviour
                 Cell cell = cellGO.AddComponent<Cell>();
                 cell.SetSprite(sprite);
 
-                if(Random.value < noise)
+                if(wg.IsTreeHere(noise))
                 {
                     Instantiate(treePrefab, pos, Quaternion.identity, transform);
                 }
