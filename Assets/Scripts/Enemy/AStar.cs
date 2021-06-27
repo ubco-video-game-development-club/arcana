@@ -11,6 +11,8 @@ public class AStar : MonoBehaviour
         Node startNode = FindNearestNodeTo(start);
         Node endNode = FindNearestNodeTo(end);
 
+        if(startNode == null || endNode == null) return null;
+
         HashSet<Node> open = new HashSet<Node>();
         open.Add(startNode);
 
@@ -31,6 +33,7 @@ public class AStar : MonoBehaviour
             foreach(Node neighbour in current.neighbours)
             {
                 float tentativeGScore = gScore[current] + (current.position - neighbour.position).sqrMagnitude;
+                if(!gScore.ContainsKey(neighbour)) gScore.Add(neighbour, Mathf.Infinity);
                 if(tentativeGScore < gScore[neighbour])
                 {
                     if(!cameFrom.ContainsKey(neighbour)) cameFrom.Add(neighbour, current);
@@ -100,9 +103,10 @@ public class AStar : MonoBehaviour
 
     private Node FindNearestNodeTo(Vector2 position)
     {
-        Node nearest = default;
+        Node nearest = null;
         foreach(Node node in nodes)
         {
+            if(nearest == null) nearest = node;
             Vector2 d1 = position - node.position;
             Vector2 d2 = position - nearest.position;
             if(d1.sqrMagnitude < d2.sqrMagnitude) nearest = node;

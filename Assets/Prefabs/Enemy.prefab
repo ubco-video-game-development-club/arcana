@@ -135,3 +135,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   maxHealth: 10
+  patrolRadius: 10
+  moveSpeed: 1
+  rigidbody: {fileID: 2526650621553273298}
