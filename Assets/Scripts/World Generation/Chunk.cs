@@ -42,6 +42,9 @@ public class Chunk : MonoBehaviour
         int pSeed = GeneratePositionalSeed(chunkPos) + wg.Seed;
         Random.InitState(pSeed);
 
+		AStar astar = GameManager.AStar;
+        AStar.Node[] nodes = new AStar.Node[CHUNK_SIZE_CELLS * CHUNK_SIZE_CELLS];
+
         Vector2 monsterSpawnPosition = Vector2.zero;
         bool spawnMonsters = false;
         bool spawnChecked = false;
@@ -74,6 +77,9 @@ public class Chunk : MonoBehaviour
                         position = pos,
                         cellSprite = null
                     });
+                } else //If there's no tree, this is a valid navigation node
+                {
+                    nodes[x + CHUNK_SIZE_CELLS * y] = new AStar.Node(pos, 1.0f);
                 }
             }
         }
@@ -87,7 +93,36 @@ public class Chunk : MonoBehaviour
             });
         }
 
+		CreateNavNeighbours(astar, nodes);
         StartCoroutine(ChunkCommands());
+    }
+
+    private void CreateNavNeighbours(AStar astar, AStar.Node[] nodes)
+    {
+        for(int y = 0; y < CHUNK_SIZE_CELLS; y++)
+        {
+            for(int x = 0; x < CHUNK_SIZE_CELLS; x++)
+            {
+                AStar.Node node = nodes[x + CHUNK_SIZE_CELLS * y];
+                if(node == null) continue;
+
+                AStar.Node top = TryGetNode(x, y + 1, nodes);
+                AStar.Node bottom = TryGetNode(x, y - 1, nodes);
+                AStar.Node left = TryGetNode(x - 1, y, nodes);
+                AStar.Node right = TryGetNode(x + 1, y, nodes);
+
+                if(top != null) node.neighbours.Add(top);
+                if(bottom != null) node.neighbours.Add(bottom);
+                if(left != null) node.neighbours.Add(left);
+                if(right != null) node.neighbours.Add(right);
+            }
+        }
+    }
+
+    private AStar.Node TryGetNode(int x, int y, AStar.Node[] nodes)
+    {
+        if(x < 0 || y < 0 || x >= CHUNK_SIZE_CELLS || y >= CHUNK_SIZE_CELLS) return null;
+        else return nodes[x + CHUNK_SIZE_CELLS * y];
     }
 
     private IEnumerator ChunkCommands()
