@@ -8,6 +8,8 @@ public class Player : MonoBehaviour
     [SerializeField] private float moveSpeed = 1f;
 
     private Vector2 movement;
+    private float maxPlayerDist;
+    private Transform otherPlayer;
 
     private Rigidbody2D rb2D;
     private Animator animator;
@@ -16,6 +18,12 @@ public class Player : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+    }
+
+    void Start()
+    {
+        otherPlayer = GameManager.GetOtherPlayer(transform);
+        maxPlayerDist = Camera.main.orthographicSize * 2 - 2;
     }
 
     void Update()
@@ -32,14 +40,21 @@ public class Player : MonoBehaviour
 
     void FixedUpdate()
     {
-        rb2D.AddForce(movement * moveSpeed);
+        Vector2 moveForce = movement * moveSpeed;
+
+        // Prevent moving too far away
+        Vector2 playerDiff = transform.position - otherPlayer.position;
+        bool isPastLimit = playerDiff.sqrMagnitude > maxPlayerDist * maxPlayerDist;
+        if (isPastLimit && Vector2.Dot(playerDiff, moveForce) > 0) return;
+
+        rb2D.AddForce(moveForce);
     }
 
     public void OnMove(InputAction.CallbackContext context)
     {
         // hack cause Unity calls this on prefabs - WTF?
         if (!gameObject.activeInHierarchy) return;
-        
+
         movement = context.ReadValue<Vector2>();
     }
 
