@@ -155,8 +155,7 @@ MonoBehaviour:
   cellSprites:
   - {fileID: 10905, guid: 0000000000000000f000000000000000, type: 0}
   - {fileID: 10913, guid: 0000000000000000f000000000000000, type: 0}
-  treePrefab: {fileID: 7186656515561917445, guid: abdb35f9c7390c64ea44fdc3c0561f98,
-    type: 3}
+  treePrefab: {fileID: 7186656515561917445, guid: abdb35f9c7390c64ea44fdc3c0561f98, type: 3}
 --- !u!4 &120518723
 Transform:
   m_ObjectHideFlags: 0
@@ -169,7 +168,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 3
+  m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!1 &519420028
 GameObject:
@@ -300,7 +299,7 @@ Transform:
   m_LocalScale: {x: 1, y: 1, z: 1}
   m_Children: []
   m_Father: {fileID: 0}
-  m_RootOrder: 2
+  m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
 --- !u!114 &1104709124
 MonoBehaviour:
@@ -347,8 +346,7 @@ MonoBehaviour:
       m_Interactions: 
       m_SingletonActionBindings: []
     m_Reference: {fileID: 0}
-  m_PlayerPrefab: {fileID: 2234846188871342540, guid: fc6e30c4a20e79e42878ddabfe71ad41,
-    type: 3}
+  m_PlayerPrefab: {fileID: 2234846188871342540, guid: fc6e30c4a20e79e42878ddabfe71ad41, type: 3}
   m_SplitScreen: 0
   m_MaintainAspectRatioInSplitScreen: 0
   m_FixedNumberOfSplitScreens: -1
