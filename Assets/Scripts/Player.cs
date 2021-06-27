@@ -37,8 +37,6 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
-        Debug.Log("Working");
-
         // hack cause Unity calls this on prefabs - WTF?
         if (!gameObject.activeInHierarchy) return;
         

@@ -90,6 +90,61 @@
                     "isPartOfComposite": true
                 },
                 {
+                    "name": "WASD",
+                    "id": "7c53a7b3-3227-45a3-9acd-fbd09b804699",
+                    "path": "2DVector",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "",
+                    "action": "Move",
+                    "isComposite": true,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "up",
+                    "id": "8a09eeaf-d3e5-4914-a8a5-689549a19b5d",
+                    "path": "<Keyboard>/upArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse&KeyboardAlt",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "down",
+                    "id": "ddd041d9-d1c4-4d52-9203-3e42ec8913e4",
+                    "path": "<Keyboard>/downArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse&KeyboardAlt",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "left",
+                    "id": "66b0ec51-1741-4e80-b6a3-1150f8890c52",
+                    "path": "<Keyboard>/leftArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse&KeyboardAlt",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
+                    "name": "right",
+                    "id": "e28b82c3-9a64-4b11-8c64-da96370f2f4b",
+                    "path": "<Keyboard>/rightArrow",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse&KeyboardAlt",
+                    "action": "Move",
+                    "isComposite": false,
+                    "isPartOfComposite": true
+                },
+                {
                     "name": "",
                     "id": "f83b714e-5b96-44e8-bc83-6a57756638ea",
                     "path": "<Gamepad>/rightTrigger",
@@ -107,6 +162,17 @@
                     "interactions": "",
                     "processors": "",
                     "groups": "Mouse&Keyboard",
+                    "action": "Attack",
+                    "isComposite": false,
+                    "isPartOfComposite": false
+                },
+                {
+                    "name": "",
+                    "id": "d3f09973-a002-4ff0-bec8-7e4b3e9c2802",
+                    "path": "<Keyboard>/numpadEnter",
+                    "interactions": "",
+                    "processors": "",
+                    "groups": "Mouse&KeyboardAlt",
                     "action": "Attack",
                     "isComposite": false,
                     "isPartOfComposite": false
@@ -137,6 +203,22 @@
             "devices": [
                 {
                     "devicePath": "<Gamepad>",
+                    "isOptional": false,
+                    "isOR": false
+                }
+            ]
+        },
+        {
+            "name": "Mouse&KeyboardAlt",
+            "bindingGroup": "Mouse&KeyboardAlt",
+            "devices": [
+                {
+                    "devicePath": "<Keyboard>",
+                    "isOptional": false,
+                    "isOR": false
+                },
+                {
+                    "devicePath": "<Mouse>",
                     "isOptional": false,
                     "isOR": false
                 }
