@@ -104,11 +104,12 @@ public class Chunk : MonoBehaviour
             for(int x = 0; x < CHUNK_SIZE_CELLS; x++)
             {
                 AStar.Node node = nodes[x + CHUNK_SIZE_CELLS * y];
-            
-                AStar.Node top = TryGetNode(x, y + 1);
-                AStar.Node bottom = TryGetNode(x, y - 1);
-                AStar.Node left = TryGetNode(x - 1, y);
-                AStar.Node right = TryGetNode(x + 1, y);
+                if(node == null) continue;
+
+                AStar.Node top = TryGetNode(x, y + 1, nodes);
+                AStar.Node bottom = TryGetNode(x, y - 1, nodes);
+                AStar.Node left = TryGetNode(x - 1, y, nodes);
+                AStar.Node right = TryGetNode(x + 1, y, nodes);
 
                 if(top != null) node.neighbours.Add(top);
                 if(bottom != null) node.neighbours.Add(bottom);
