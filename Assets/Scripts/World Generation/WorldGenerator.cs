@@ -17,7 +17,6 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float noiseZoom = 16.0f;
     [SerializeField] private float treeRarity = 5.0f;
     [SerializeField] private float treeThreshold = 0.5f;
-    [SerializeField] private int maxPoiPerType = 5;
     [SerializeField] private float poiSpawnRadius = 500.0f;
     [SerializeField] private float pathWidth = 3.0f;
     [SerializeField] private float pathDensity = 0.5f;
@@ -105,7 +104,7 @@ public class WorldGenerator : MonoBehaviour
         for(int poiIndex = 0; poiIndex < poiCount; poiIndex++)
         {
             PointOfInterestType currentType = (PointOfInterestType)poiIndex;
-            int spawnCount = Random.Range(1, maxPoiPerType);
+            int spawnCount = PointOfInterest.GetSpawnCount(currentType);
             for(int i = 0; i < spawnCount; i++)
             {
                 Vector2 pos = Random.insideUnitCircle * poiSpawnRadius;

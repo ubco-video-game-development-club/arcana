@@ -4,7 +4,6 @@ using UnityEngine;
 
 public enum PointOfInterestType
 {
-    Artifact,
     Chest,
     Door,
     Shrine,
@@ -25,5 +24,22 @@ public struct PointOfInterest
     {
         this.position = position;
         this.type = type;
+    }
+
+    public static int GetSpawnCount(PointOfInterestType type)
+    {
+        switch(type)
+        {
+            case PointOfInterestType.Chest:
+                return Random.Range(5, 10);
+            case PointOfInterestType.Door:
+                return Random.Range(5, 10);
+            case PointOfInterestType.Shrine:
+                return Random.Range(5, 10);
+            case PointOfInterestType.Runestone:
+                return 4;
+            default:
+                return -1;
+        }
     }
 }
