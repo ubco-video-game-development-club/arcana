@@ -11,6 +11,8 @@ public class Chunk : MonoBehaviour
 
 	[SerializeField] private Sprite[] cellSprites;
     [SerializeField] private GameObject treePrefab;
+    [SerializeField] private MonsterSpawnTable spawnTable;
+    [SerializeField] private float monsterSpawnChance = 0.1f;
     private new Transform camera;
     private Queue<Command> commandBuffer = new Queue<Command>();
 
@@ -40,12 +42,15 @@ public class Chunk : MonoBehaviour
         int pSeed = GeneratePositionalSeed(chunkPos) + wg.Seed;
         Random.InitState(pSeed);
 
+        Vector2 monsterSpawnPosition = Vector2.zero;
+        bool spawnMonsters = false;
+        bool spawnChecked = false;
         for(int y = 0; y < CHUNK_SIZE_CELLS; y++)
         {
             for(int x = 0; x < CHUNK_SIZE_CELLS; x++)
             {
                 Vector2 pos = new Vector2(x * CHUNK_CELL_SIZE, y * CHUNK_CELL_SIZE) + chunkPos;
-                float noise = wg.GetNoiseAt(pos);
+                float noise = wg.GetNoiseAt(pos, out bool isTree, out bool isPath);
                 int index = Mathf.RoundToInt(noise * (cellSprites.Length - 1));
 				Sprite sprite = cellSprites[Mathf.Max(index, 0)];
 
@@ -55,7 +60,14 @@ public class Chunk : MonoBehaviour
                     cellSprite = sprite,
                 });
 
-                if(wg.IsTreeHere(noise))
+                if(isPath && !spawnChecked)
+                {
+                    spawnMonsters = Random.value < monsterSpawnChance;
+                    spawnChecked = true;
+                    monsterSpawnPosition = pos;
+                }
+
+                if(isTree)
                 {
                     commandBuffer.Enqueue(new Command() {
                         type = CommandType.SpawnTree,
@@ -64,6 +76,15 @@ public class Chunk : MonoBehaviour
                     });
                 }
             }
+        }
+
+        if(spawnMonsters)
+        {
+            commandBuffer.Enqueue(new Command(){
+                type = CommandType.SpawnMonsters,
+                position = monsterSpawnPosition,
+                cellSprite = null,
+            });
         }
 
         StartCoroutine(ChunkCommands());
@@ -83,9 +104,41 @@ public class Chunk : MonoBehaviour
                 case CommandType.SpawnTree:
                     Instantiate(treePrefab, command.position, Quaternion.identity, transform);
                     break;
+                case CommandType.SpawnMonsters:
+                    SpawnMonsters(command.position);
+                    break;
             }
 
             yield return waitForEndOfFrame;
+        }
+    }
+
+    private void SpawnMonsters(Vector2 pos)
+    {
+        MonsterEncounter[] encounters = spawnTable.encounters;
+        int index = Random.Range(0, encounters.Length);
+        MonsterEncounter encounter = encounters[index];
+
+        switch(encounter.distribution)
+        {
+            case MonsterDistribution.Even:
+                int evenCount = encounter.count / encounter.monsterPrefabs.Length;
+                foreach(GameObject monster in encounter.monsterPrefabs)
+                {
+                    for(int i = 0; i < evenCount; i++)
+                    {
+                        Instantiate(monster, pos + Random.insideUnitCircle, Quaternion.identity);
+                    }
+                }
+                break;
+            case MonsterDistribution.Random:
+                for(int i = 0; i < encounter.count; i++)
+                {
+                    GameObject[] monsters = encounter.monsterPrefabs;
+                    index = Random.Range(0, monsters.Length);
+                    Instantiate(monsters[index], pos + Random.insideUnitCircle, Quaternion.identity);
+                }
+                break;
         }
     }
 
@@ -116,6 +169,7 @@ public class Chunk : MonoBehaviour
     {
         SpawnCell,
         SpawnTree,
+        SpawnMonsters,
     }
 
    private struct Command

@@ -68,24 +68,25 @@ public class WorldGenerator : MonoBehaviour
     }
 
     //Gets the perlin noise value at the specified position (world coordinated)
-    public float GetNoiseAt(Vector2 position)
+    public float GetNoiseAt(Vector2 position, out bool isTree, out bool isPath)
     {
-        if(position.sqrMagnitude > ForestRadius * ForestRadius) return -1.0f;
-
-		float d = DistanceToNearestPath(position);
-        if(d < pathWidth && Random.value * d < pathDensity) return 1.0f;
-
-		if (position.sqrMagnitude < SPAWN_RADIUS * SPAWN_RADIUS) return 0.0f;
-
 		Vector2 nPos = position / noiseZoom;
-		float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);
+		float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);        
+
+        if(position.sqrMagnitude > ForestRadius * ForestRadius) n = -1.0f;
+
+		if (position.sqrMagnitude < SPAWN_RADIUS * SPAWN_RADIUS) n = 0.0f;
+
+		isPath = IsPathHere(position);
+        isTree = IsTreeHere(position, n, isPath);
+
         return n;
     }
 
-    public bool IsTreeHere(float noise)
+    private bool IsTreeHere(Vector2 position, float noise, bool isPath)
     {
         if(noise < 0.0f) return true;
-        if(noise < treeThreshold || noise == 1.0f) return false;
+        if(noise < treeThreshold || isPath) return false;
 
         float r = Random.value;
         if(r * treeRarity < noise)
@@ -94,6 +95,13 @@ public class WorldGenerator : MonoBehaviour
         }
 
         return false;
+    }
+
+    private bool IsPathHere(Vector2 position)
+    {
+		float d = DistanceToNearestPath(position);
+		if (d < pathWidth && Random.value * d < pathDensity) return true;
+        else return false;
     }
 
     private void GeneratePointsOfInterest()
