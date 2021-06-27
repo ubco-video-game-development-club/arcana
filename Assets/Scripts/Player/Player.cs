@@ -2,6 +2,7 @@ using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.InputSystem;
+using UnityEngine.Events;
 
 public class Player : MonoBehaviour
 {
@@ -11,7 +12,9 @@ public class Player : MonoBehaviour
     [SerializeField] private LayerMask interactLayer;
     [SerializeField] private Tooltip interactTooltipPrefab;
 
-    private List<Artifact> artifacts;
+    public UnityEvent<List<Artifact>> OnArtifactsChanged { get; private set; }
+
+    private List<Artifact> artifacts = new List<Artifact>();
     private Vector2 movement;
     private float maxPlayerDist;
     private Transform otherPlayer;
@@ -19,6 +22,7 @@ public class Player : MonoBehaviour
     // interaction
     private Collider2D[] interactTargets = new Collider2D[5];
     private int numInteractTargets = 0;
+    private Interactable targetInteractable;
     private Tooltip interactTooltip;
 
     private Rigidbody2D rb2D;
@@ -28,6 +32,8 @@ public class Player : MonoBehaviour
     {
         rb2D = GetComponent<Rigidbody2D>();
         animator = GetComponent<Animator>();
+
+        OnArtifactsChanged = new UnityEvent<List<Artifact>>();
     }
 
     void Start()
@@ -89,6 +95,23 @@ public class Player : MonoBehaviour
         }
     }
 
+    public void OnInteract(InputAction.CallbackContext context)
+    {
+        // hack cause Unity calls this on prefabs - WTF?
+        if (!gameObject.activeInHierarchy) return;
+
+        if (context.started && targetInteractable != null)
+        {
+            targetInteractable.Interact(this);
+        }
+    }
+
+    public void AddArtifact(Artifact artifact)
+    {
+        artifacts.Add(artifact);
+        OnArtifactsChanged.Invoke(artifacts);
+    }
+
     private void UpdateInteractions()
     {
         Interactable interactable;
@@ -101,6 +124,7 @@ public class Player : MonoBehaviour
                 interactable.SetTooltipActive(false);
             }
         }
+        targetInteractable = null;
         interactTooltip.SetActive(false);
 
         // Check for nearby interactables
@@ -120,6 +144,7 @@ public class Player : MonoBehaviour
         // Set the nearest interactable active
         if (closestIdx >= 0 && interactTargets[closestIdx].TryGetComponent<Interactable>(out interactable))
         {
+            targetInteractable = interactable;
             interactable.SetTooltipActive(true);
             interactTooltip.SetActive(true);
         }

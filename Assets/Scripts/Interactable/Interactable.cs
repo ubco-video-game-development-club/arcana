@@ -22,4 +22,6 @@ public abstract class Interactable : MonoBehaviour
     }
 
     protected abstract void OnTooltipCreated(Tooltip tooltip);
+
+    public abstract void Interact(Player player);
 }
