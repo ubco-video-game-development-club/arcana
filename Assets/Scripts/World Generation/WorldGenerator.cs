@@ -9,6 +9,7 @@ public class WorldGenerator : MonoBehaviour
     private const float SPAWN_RADIUS = 5.0f;
 
     public int Seed { get => seed; }
+	public float ForestRadius => poiSpawnRadius + 50.0f;
     private float PerlinOffset => (float)(seed >> 12); //lowest 22 bits of seed
 
     [SerializeField] private int seed;
@@ -16,7 +17,6 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float noiseZoom = 16.0f;
     [SerializeField] private float treeRarity = 5.0f;
     [SerializeField] private float treeThreshold = 0.5f;
-    [SerializeField] private int maxPoiPerType = 5;
     [SerializeField] private float poiSpawnRadius = 500.0f;
     [SerializeField] private float pathWidth = 3.0f;
     [SerializeField] private float pathDensity = 0.5f;
@@ -69,6 +69,8 @@ public class WorldGenerator : MonoBehaviour
     //Gets the perlin noise value at the specified position (world coordinated)
     public float GetNoiseAt(Vector2 position)
     {
+        if(position.sqrMagnitude > ForestRadius * ForestRadius) return -1.0f;
+
 		float d = DistanceToNearestPath(position);
         if(d < pathWidth && Random.value * d < pathDensity) return 1.0f;
 
@@ -81,6 +83,7 @@ public class WorldGenerator : MonoBehaviour
 
     public bool IsTreeHere(float noise)
     {
+        if(noise < 0.0f) return true;
         if(noise < treeThreshold || noise == 1.0f) return false;
 
         float r = Random.value;
@@ -101,7 +104,7 @@ public class WorldGenerator : MonoBehaviour
         for(int poiIndex = 0; poiIndex < poiCount; poiIndex++)
         {
             PointOfInterestType currentType = (PointOfInterestType)poiIndex;
-            int spawnCount = Random.Range(1, maxPoiPerType);
+            int spawnCount = PointOfInterest.GetSpawnCount(currentType);
             for(int i = 0; i < spawnCount; i++)
             {
                 Vector2 pos = Random.insideUnitCircle * poiSpawnRadius;
