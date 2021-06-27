@@ -11,7 +11,7 @@ public class Chunk : MonoBehaviour
 
 	[SerializeField] private Sprite[] cellSprites;
     [SerializeField] private GameObject treePrefab;
-    private Transform camera;
+    private new Transform camera;
 
     void Awake()
     {
