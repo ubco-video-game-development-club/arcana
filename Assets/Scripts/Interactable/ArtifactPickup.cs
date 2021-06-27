@@ -10,4 +10,10 @@ public class ArtifactPickup : Interactable
     {
         tooltip.SetText(artifact.Title + "\n" + artifact.Desc);
     }
+
+    public override void Interact(Player player)
+    {
+        player.AddArtifact(artifact);
+        Destroy(gameObject);
+    }
 }
