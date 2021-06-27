@@ -417,6 +417,7 @@ MonoBehaviour:
   poiSpawnRadius: 500
   pathWidth: 1
   pathDensity: 0.9
+  pathCurviness: 3
   chunkPrefab: {fileID: 5599468659421148231, guid: d36facfc9e0e3ae42ada8dde339b742a, type: 3}
 --- !u!4 &1104709123
 Transform:
