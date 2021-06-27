@@ -48,9 +48,7 @@ public class Chunk : MonoBehaviour
                 float noise = wg.GetNoiseAt(pos);
                 int index = Mathf.RoundToInt(noise * (cellSprites.Length - 1));
 				Sprite sprite = cellSprites[index];
-
-                Debug.Log($"{x}, {y} :: {noise}");
-
+                
                 GameObject cellGO = new GameObject($"Cell {x}-{y}");
                 cellGO.transform.parent = transform;
                 cellGO.transform.position = pos;
