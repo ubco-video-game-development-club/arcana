@@ -219,3 +219,8 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   moveSpeed: 75
   attack: {fileID: 0}
+  interactRadius: 1.5
+  interactLayer:
+    serializedVersion: 2
+    m_Bits: 512
+  interactTooltipPrefab: {fileID: 8285482995199510244, guid: 9e44414611a380744a0acc342dca58cf, type: 3}

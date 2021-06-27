@@ -7,10 +7,19 @@ public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1f;
     [SerializeField] private PlayerAttack attack;
+    [SerializeField] private float interactRadius;
+    [SerializeField] private LayerMask interactLayer;
+    [SerializeField] private Tooltip interactTooltipPrefab;
 
+    private List<Artifact> artifacts;
     private Vector2 movement;
     private float maxPlayerDist;
     private Transform otherPlayer;
+
+    // interaction
+    private Collider2D[] interactTargets = new Collider2D[5];
+    private int numInteractTargets = 0;
+    private Tooltip interactTooltip;
 
     private Rigidbody2D rb2D;
     private Animator animator;
@@ -23,6 +32,10 @@ public class Player : MonoBehaviour
 
     void Start()
     {
+        interactTooltip = Instantiate(interactTooltipPrefab, transform.position, Quaternion.identity, HUD.TooltipParent);
+        interactTooltip.SetTarget(transform);
+        interactTooltip.SetActive(false);
+
         otherPlayer = GameManager.GetOtherPlayer(this).transform;
         maxPlayerDist = Camera.main.orthographicSize * 2 - 2;
 
@@ -39,6 +52,8 @@ public class Player : MonoBehaviour
             animator.SetFloat("xDir", moveDir.x);
             animator.SetFloat("yDir", moveDir.y);
         }
+
+        UpdateInteractions();
     }
 
     void FixedUpdate()
@@ -71,6 +86,42 @@ public class Player : MonoBehaviour
             animator.SetTrigger("attack");
             attack.Invoke(CreateAttackData());
             StartCoroutine(AttackCooldown());
+        }
+    }
+
+    private void UpdateInteractions()
+    {
+        Interactable interactable;
+
+        // Clear current interactions
+        for (int i = 0; i < numInteractTargets; i++)
+        {
+            if (interactTargets[i].TryGetComponent<Interactable>(out interactable))
+            {
+                interactable.SetTooltipActive(false);
+            }
+        }
+        interactTooltip.SetActive(false);
+
+        // Check for nearby interactables
+        numInteractTargets = Physics2D.OverlapCircleNonAlloc(transform.position, interactRadius, interactTargets, interactLayer);
+        int closestIdx = -1;
+        float smallestSqrDist = float.MaxValue;
+        for (int i = 0; i < numInteractTargets; i++)
+        {
+            float sqrDist = (interactTargets[i].transform.position - transform.position).sqrMagnitude;
+            if (sqrDist < smallestSqrDist)
+            {
+                smallestSqrDist = sqrDist;
+                closestIdx = i;
+            }
+        }
+
+        // Set the nearest interactable active
+        if (closestIdx >= 0 && interactTargets[closestIdx].TryGetComponent<Interactable>(out interactable))
+        {
+            interactable.SetTooltipActive(true);
+            interactTooltip.SetActive(true);
         }
     }
 

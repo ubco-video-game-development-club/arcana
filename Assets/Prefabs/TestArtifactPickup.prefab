@@ -13,7 +13,7 @@ GameObject:
   - component: {fileID: 121506537245739093}
   - component: {fileID: 121506537245739094}
   - component: {fileID: 121506537245739098}
-  m_Layer: 0
+  m_Layer: 9
   m_Name: TestArtifactPickup
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -144,8 +144,6 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 36e405fb249eb464fae21f313b45ba9f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  tooltipPrefab: {fileID: 7376708139671237617, guid: 5cabfc87e2e9b3047ab860c4a517b5c8, type: 3}
+  pickupRadius: 2
   artifact: {fileID: 11400000, guid: e2b258428edf17d4caafddff6199703c, type: 2}
-  pickupRadius: 1
-  playerLayer:
-    serializedVersion: 2
-    m_Bits: 64
