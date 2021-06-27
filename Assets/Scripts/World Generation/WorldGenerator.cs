@@ -72,9 +72,6 @@ public class WorldGenerator : MonoBehaviour
     {
         if(position.sqrMagnitude > ForestRadius * ForestRadius) return -1.0f;
 
-		float d = DistanceToNearestPath(position);
-        if(d < pathWidth && Random.value * d < pathDensity) return 1.0f;
-
 		if (position.sqrMagnitude < SPAWN_RADIUS * SPAWN_RADIUS) return 0.0f;
 
 		Vector2 nPos = position / noiseZoom;
@@ -82,10 +79,13 @@ public class WorldGenerator : MonoBehaviour
         return n;
     }
 
-    public bool IsTreeHere(float noise)
+    public bool IsTreeHere(Vector2 position, float noise)
     {
         if(noise < 0.0f) return true;
-        if(noise < treeThreshold || noise == 1.0f) return false;
+        if(noise < treeThreshold) return false;
+
+		float d = DistanceToNearestPath(position);
+		if (d < pathWidth && Random.value * d < pathDensity) return false;
 
         float r = Random.value;
         if(r * treeRarity < noise)

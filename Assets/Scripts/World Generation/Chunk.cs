@@ -55,7 +55,7 @@ public class Chunk : MonoBehaviour
                     cellSprite = sprite,
                 });
 
-                if(wg.IsTreeHere(noise))
+                if(wg.IsTreeHere(pos, noise))
                 {
                     commandBuffer.Enqueue(new Command() {
                         type = CommandType.SpawnTree,
