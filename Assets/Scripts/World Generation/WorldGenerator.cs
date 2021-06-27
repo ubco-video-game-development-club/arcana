@@ -37,7 +37,6 @@ public class WorldGenerator : MonoBehaviour
 
         Random.InitState(seed);
         GeneratePointsOfInterest();
-        GeneratePaths();
     }
 
     void Update()
@@ -98,11 +97,6 @@ public class WorldGenerator : MonoBehaviour
                 pointsOfInterest.Add(poi);
             }
         }
-    }
-
-    private void GeneratePaths()
-    {
-
     }
 
     //Checks if a chunk is at the specified chunk position
