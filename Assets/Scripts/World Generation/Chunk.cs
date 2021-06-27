@@ -6,15 +6,31 @@ public class Chunk : MonoBehaviour
 {
     public const int CHUNK_SIZE_CELLS = 16;
     public const float CHUNK_CELL_SIZE = 1.0f;
+    public const float CHUNK_SIZE = CHUNK_SIZE_CELLS * CHUNK_CELL_SIZE;
     public const int PSEED_PRIME = 816_887_069;
 
 
 	[SerializeField] private Sprite[] cellSprites;
     [SerializeField] private GameObject treePrefab;
+    private Transform camera;
+
+    void Awake()
+    {
+        camera = Camera.main.transform;
+    }
 
     void Start()
     {
         Generate();
+    }
+
+    void Update()
+    {
+        Vector2 d = camera.position - transform.position;
+        if(d.sqrMagnitude > WorldGenerator.CHUNK_DESPAWN_DISTANCE * WorldGenerator.CHUNK_DESPAWN_DISTANCE)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Generate()
