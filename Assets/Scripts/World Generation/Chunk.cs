@@ -12,6 +12,7 @@ public class Chunk : MonoBehaviour
 	[SerializeField] private Sprite[] cellSprites;
     [SerializeField] private GameObject treePrefab;
     private new Transform camera;
+    private Queue<Command> commandBuffer = new Queue<Command>();
 
     void Awake()
     {
@@ -47,20 +48,55 @@ public class Chunk : MonoBehaviour
                 float noise = wg.GetNoiseAt(pos);
                 int index = Mathf.RoundToInt(noise * (cellSprites.Length - 1));
 				Sprite sprite = cellSprites[Mathf.Max(index, 0)];
-                
-                GameObject cellGO = new GameObject($"Cell {x}-{y}");
-                cellGO.transform.parent = transform;
-                cellGO.transform.position = pos;
 
-                Cell cell = cellGO.AddComponent<Cell>();
-                cell.SetSprite(sprite);
+                commandBuffer.Enqueue(new Command() {
+                    type = CommandType.SpawnCell,
+                    position = pos,
+                    cellSprite = sprite,
+                });
 
                 if(wg.IsTreeHere(noise))
                 {
-                    Instantiate(treePrefab, pos, Quaternion.identity, transform);
+                    commandBuffer.Enqueue(new Command() {
+                        type = CommandType.SpawnTree,
+                        position = pos,
+                        cellSprite = null
+                    });
                 }
             }
         }
+
+        StartCoroutine(ChunkCommands());
+    }
+
+    private IEnumerator ChunkCommands()
+    {
+        YieldInstruction waitForEndOfFrame = new WaitForEndOfFrame();
+		while(commandBuffer.Count > 0)
+        {
+            Command command = commandBuffer.Dequeue();
+            switch(command.type)
+            {
+                case CommandType.SpawnCell:
+                    SpawnCell(command.position, command.cellSprite);
+                    break;
+                case CommandType.SpawnTree:
+                    Instantiate(treePrefab, command.position, Quaternion.identity, transform);
+                    break;
+            }
+
+            yield return waitForEndOfFrame;
+        }
+    }
+
+    private void SpawnCell(Vector2 pos, Sprite sprite)
+    {
+		GameObject cellGO = new GameObject($"Cell ({pos.x}, {pos.y})");
+		cellGO.transform.parent = transform;
+		cellGO.transform.position = pos;
+
+		Cell cell = cellGO.AddComponent<Cell>();
+		cell.SetSprite(sprite);
     }
 
     //This is to generate "random" seeds based on position.
@@ -75,4 +111,17 @@ public class Chunk : MonoBehaviour
         int seed = wholeX ^ wholeY * (wholeX + wholeY) ^ PSEED_PRIME;
         return seed;
     }
+
+    private enum CommandType
+    {
+        SpawnCell,
+        SpawnTree,
+    }
+
+   private struct Command
+   {
+       public CommandType type;
+       public Vector2 position;
+       public Sprite cellSprite;
+   }
 }
