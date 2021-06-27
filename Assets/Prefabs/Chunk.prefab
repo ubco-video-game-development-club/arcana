@@ -49,3 +49,4 @@ MonoBehaviour:
   - {fileID: 5042838717553256569, guid: 38d5ee9f583805741ab164bc46056d29, type: 3}
   treePrefab: {fileID: 7186656515561917445, guid: abdb35f9c7390c64ea44fdc3c0561f98, type: 3}
   spawnTable: {fileID: 11400000, guid: 18106a4a214f043469912a61b2429356, type: 2}
+  monsterSpawnChance: 0.3
