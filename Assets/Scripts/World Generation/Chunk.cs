@@ -12,10 +12,25 @@ public class Chunk : MonoBehaviour
 
 	[SerializeField] private Sprite[] cellSprites;
     [SerializeField] private GameObject treePrefab;
+    private Transform camera;
+
+    void Awake()
+    {
+        camera = Camera.main.transform;
+    }
 
     void Start()
     {
         Generate();
+    }
+
+    void Update()
+    {
+        Vector2 d = camera.position - transform.position;
+        if(d.sqrMagnitude > WorldGenerator.CHUNK_DESPAWN_DISTANCE * WorldGenerator.CHUNK_DESPAWN_DISTANCE)
+        {
+            Destroy(gameObject);
+        }
     }
 
     private void Generate()

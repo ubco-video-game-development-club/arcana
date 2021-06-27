@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class WorldGenerator : MonoBehaviour
 {
+	public const float CHUNK_DESPAWN_DISTANCE = Chunk.CHUNK_SIZE * CHUNK_SPAWN_RANGE * 2.0f;
     private const int CHUNK_SPAWN_RANGE = 2;
 
     public int Seed { get => seed; }
@@ -31,6 +32,8 @@ public class WorldGenerator : MonoBehaviour
 
     void Update()
     {
+        FilterChunks();
+
         Vector2 chunkPos = camera.position / Chunk.CHUNK_SIZE;
         
         for(int x = -CHUNK_SPAWN_RANGE; x < CHUNK_SPAWN_RANGE; x++)
@@ -69,5 +72,18 @@ public class WorldGenerator : MonoBehaviour
         }
 
         return false;
+    }
+
+    //Removes all destroyed chunks
+    private void FilterChunks()
+    {
+        Chunk[] old = chunks.ToArray();
+        foreach(Chunk chunk in old)
+        {
+            if(chunk == null)
+            {
+                chunks.Remove(chunk);
+            }
+        }
     }
 }
