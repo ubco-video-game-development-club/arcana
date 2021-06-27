@@ -8,7 +8,7 @@ public class WorldGenerator : MonoBehaviour
     private const int CHUNK_SPAWN_RANGE = 2;
 
     public int Seed { get => seed; }
-    private float PerlinOffset => (float)(seed & 4194304); //lowest 22 bits of seed
+    private float PerlinOffset => (float)(seed >> 12); //lowest 22 bits of seed
 
     [SerializeField] private int seed;
     [SerializeField] private bool generateRandomSeedOnStart = false;
@@ -30,6 +30,7 @@ public class WorldGenerator : MonoBehaviour
         {
             seed = Random.Range(System.Int32.MinValue, System.Int32.MaxValue);
             Debug.Log($"Generated seed {seed}");
+            Debug.Log(PerlinOffset);
         }
     }
 
