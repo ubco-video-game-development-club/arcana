@@ -94,6 +94,8 @@ public class WorldGenerator : MonoBehaviour
 
     private void GeneratePointsOfInterest()
     {
+        pointsOfInterest.Add(new PointOfInterest(Vector2.zero, PointOfInterestType.SPAWN));
+
         int poiCount = (int)PointOfInterestType.COUNT;
         
         for(int poiIndex = 0; poiIndex < poiCount; poiIndex++)
