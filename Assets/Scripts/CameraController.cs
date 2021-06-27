@@ -12,13 +12,13 @@ public class CameraController : MonoBehaviour
 
     void Start()
     {
-        target1 = GameManager.Player1;
-        target2 = GameManager.Player2;
+        target1 = GameManager.Player1.transform;
+        target2 = GameManager.Player2.transform;
     }
 
     void FixedUpdate()
     {
-        Vector2 targetPos = (GameManager.Player1.position + GameManager.Player2.position) / 2;
+        Vector2 targetPos = (target1.position + target2.position) / 2;
         Vector2 newPos = Vector2.SmoothDamp(transform.position, targetPos, ref refVelocity, followTime);
         transform.position = new Vector3(newPos.x, newPos.y, transform.position.z);
     }

@@ -23,7 +23,7 @@ public class Player : MonoBehaviour
 
     void Start()
     {
-        otherPlayer = GameManager.GetOtherPlayer(transform);
+        otherPlayer = GameManager.GetOtherPlayer(this).transform;
         maxPlayerDist = Camera.main.orthographicSize * 2 - 2;
 
         attack.Enabled = true;
