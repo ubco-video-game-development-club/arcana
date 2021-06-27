@@ -79,7 +79,9 @@ public class Chunk : MonoBehaviour
                     });
                 } else //If there's no tree, this is a valid navigation node
                 {
-                    nodes[x + CHUNK_SIZE_CELLS * y] = new AStar.Node(pos, 1.0f);
+                    AStar.Node node = new AStar.Node(pos, 1.0f);
+                    nodes[x + CHUNK_SIZE_CELLS * y] = node;
+                    astar.AddNode(node);
                 }
             }
         }
