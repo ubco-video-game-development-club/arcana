@@ -497,7 +497,7 @@ MonoBehaviour:
   treeRarity: 0
   treeThreshold: 0.4
   poiSpawnRadius: 500
-  pathWidth: 1
+  pathWidth: 3
   pathDensity: 0.9
   pathCurviness: 3
   chunkPrefab: {fileID: 5599468659421148231, guid: d36facfc9e0e3ae42ada8dde339b742a, type: 3}
