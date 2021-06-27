@@ -6,6 +6,7 @@ using UnityEngine.InputSystem;
 public class Player : MonoBehaviour
 {
     [SerializeField] private float moveSpeed = 1f;
+    [SerializeField] private PlayerAttack attack;
 
     private Vector2 movement;
     private float maxPlayerDist;
@@ -66,6 +67,17 @@ public class Player : MonoBehaviour
         if (context.started)
         {
             animator.SetTrigger("attack");
+            attack.Invoke(CreateAttackData());
         }
+    }
+
+    private AttackData CreateAttackData()
+    {
+        AttackData data = new AttackData();
+        data.origin = transform.position;
+        Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
+        data.direction = mousePos - data.origin;
+        // TODO: read damage mods from artifacts here
+        return data;
     }
 }
