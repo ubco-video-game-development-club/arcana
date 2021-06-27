@@ -9,7 +9,6 @@ public class Chunk : MonoBehaviour
     public const float CHUNK_SIZE = CHUNK_SIZE_CELLS * CHUNK_CELL_SIZE;
     public const int PSEED_PRIME = 816_887_069;
 
-
 	[SerializeField] private Sprite[] cellSprites;
     [SerializeField] private GameObject treePrefab;
     private Transform camera;

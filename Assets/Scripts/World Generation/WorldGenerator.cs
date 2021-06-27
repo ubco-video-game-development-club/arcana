@@ -31,6 +31,9 @@ public class WorldGenerator : MonoBehaviour
             seed = Random.Range(System.Int32.MinValue, System.Int32.MaxValue);
             Debug.Log($"Generated seed {seed}");
         }
+
+        GeneratePointsOfInterest();
+        GeneratePaths();
     }
 
     void Update()
@@ -74,6 +77,16 @@ public class WorldGenerator : MonoBehaviour
         }
 
         return false;
+    }
+
+    private void GeneratePointsOfInterest()
+    {
+
+    }
+
+    private void GeneratePaths()
+    {
+
     }
 
     //Checks if a chunk is at the specified chunk position
