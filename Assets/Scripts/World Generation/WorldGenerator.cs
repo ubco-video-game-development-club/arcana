@@ -6,6 +6,7 @@ public class WorldGenerator : MonoBehaviour
 {
 	public const float CHUNK_DESPAWN_DISTANCE = Chunk.CHUNK_SIZE * CHUNK_SPAWN_RANGE * 2.0f;
     private const int CHUNK_SPAWN_RANGE = 2;
+    private const float SPAWN_RADIUS = 5.0f;
 
     public int Seed { get => seed; }
     private float PerlinOffset => (float)(seed >> 12); //lowest 22 bits of seed
@@ -70,6 +71,8 @@ public class WorldGenerator : MonoBehaviour
     {
 		float d = DistanceToNearestPath(position);
         if(d < pathWidth && Random.value * d < pathDensity) return 1.0f;
+
+        if(position.sqrMagnitude < SPAWN_RADIUS * SPAWN_RADIUS) return 0.0f;
 
         Vector2 nPos = position / noiseZoom;
         float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);
