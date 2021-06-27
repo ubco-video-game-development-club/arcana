@@ -20,9 +20,11 @@ public class Player : MonoBehaviour
 
     void Update()
     {
-        Vector2 moveDir = movement.normalized;
-        if (moveDir.sqrMagnitude > 0)
+        bool isMoving = movement.sqrMagnitude > 0;
+        animator.SetBool("moving", isMoving);
+        if (isMoving)
         {
+            Vector2 moveDir = movement.normalized;
             animator.SetFloat("xDir", moveDir.x);
             animator.SetFloat("yDir", moveDir.y);
         }
@@ -35,6 +37,20 @@ public class Player : MonoBehaviour
 
     public void OnMove(InputAction.CallbackContext context)
     {
+        // hack cause Unity calls this on prefabs - WTF?
+        if (!gameObject.activeInHierarchy) return;
+        
         movement = context.ReadValue<Vector2>();
+    }
+
+    public void OnAttack(InputAction.CallbackContext context)
+    {
+        // hack cause Unity calls this on prefabs - WTF?
+        if (!gameObject.activeInHierarchy) return;
+
+        if (context.started)
+        {
+            animator.SetTrigger("attack");
+        }
     }
 }
