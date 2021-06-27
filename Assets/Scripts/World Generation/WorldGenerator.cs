@@ -18,6 +18,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private int maxPoiPerType = 5;
     [SerializeField] private float poiSpawnRadius = 500.0f;
     [SerializeField] private float pathWidth = 3.0f;
+    [SerializeField] private float pathDensity = 0.5f;
     [SerializeField] private Chunk chunkPrefab;
     private new Transform camera;
     private List<Chunk> chunks = new List<Chunk>();
@@ -67,15 +68,17 @@ public class WorldGenerator : MonoBehaviour
     //Gets the perlin noise value at the specified position (world coordinated)
     public float GetNoiseAt(Vector2 position)
     {
+		float d = DistanceToNearestPath(position);
+        if(d < pathWidth && Random.value * d < pathDensity) return 1.0f;
+
         Vector2 nPos = position / noiseZoom;
         float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);
         return n;
     }
 
-    public bool IsTreeHere(Vector2 position, float noise)
+    public bool IsTreeHere(float noise)
     {
-        float d = DistanceToNearestPath(position);
-        if(noise < treeThreshold || d < pathWidth) return false;
+        if(noise < treeThreshold || noise == 1.0f) return false;
 
         float r = Random.value;
         if(r * treeRarity < noise)

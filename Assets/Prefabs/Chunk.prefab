@@ -46,4 +46,5 @@ MonoBehaviour:
   cellSprites:
   - {fileID: 4040275573016921767, guid: 38d5ee9f583805741ab164bc46056d29, type: 3}
   - {fileID: -3287036126781237920, guid: 38d5ee9f583805741ab164bc46056d29, type: 3}
+  - {fileID: 5042838717553256569, guid: 38d5ee9f583805741ab164bc46056d29, type: 3}
   treePrefab: {fileID: 7186656515561917445, guid: abdb35f9c7390c64ea44fdc3c0561f98, type: 3}
