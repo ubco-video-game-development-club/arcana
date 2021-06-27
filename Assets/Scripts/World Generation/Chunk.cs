@@ -55,7 +55,7 @@ public class Chunk : MonoBehaviour
                 Cell cell = cellGO.AddComponent<Cell>();
                 cell.SetSprite(sprite);
 
-                if(wg.IsTreeHere(noise))
+                if(wg.IsTreeHere(pos, noise))
                 {
                     Instantiate(treePrefab, pos, Quaternion.identity, transform);
                 }

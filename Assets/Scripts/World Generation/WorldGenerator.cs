@@ -16,10 +16,13 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float treeRarity = 5.0f;
     [SerializeField] private float treeThreshold = 0.5f;
     [SerializeField] private int maxPoiPerType = 5;
-    [SerializeField] private int poiSpawnRadius = 500.0f;
+    [SerializeField] private float poiSpawnRadius = 500.0f;
+    [SerializeField] private float pathWidth = 3.0f;
     [SerializeField] private Chunk chunkPrefab;
     private new Transform camera;
     private List<Chunk> chunks = new List<Chunk>();
+
+    //Paths are just from POI 0 -> POI 1, POI 1 -> POI 2 .. POI n -> POI 0
     private List<PointOfInterest> pointsOfInterest = new List<PointOfInterest>();
 
     void Awake()
@@ -69,9 +72,10 @@ public class WorldGenerator : MonoBehaviour
         return n;
     }
 
-    public bool IsTreeHere(float noise)
+    public bool IsTreeHere(Vector2 position, float noise)
     {
-        if(noise < treeThreshold) return false;
+        float d = DistanceToNearestPath(position);
+        if(noise < treeThreshold || d < pathWidth) return false;
 
         float r = Random.value;
         if(r * treeRarity < noise)
@@ -86,10 +90,10 @@ public class WorldGenerator : MonoBehaviour
     {
         int poiCount = (int)PointOfInterestType.COUNT;
         
-        for(int poi = 0; poi < poiCount; poi++)
+        for(int poiIndex = 0; poiIndex < poiCount; poiIndex++)
         {
-            PointOfInterestType currentType = (PointOfInterestType)poi;
-            int spawnCount = Random.Range(1, maxPoIPerType);
+            PointOfInterestType currentType = (PointOfInterestType)poiIndex;
+            int spawnCount = Random.Range(1, maxPoiPerType);
             for(int i = 0; i < spawnCount; i++)
             {
                 Vector2 pos = Random.insideUnitCircle * poiSpawnRadius;
@@ -124,5 +128,34 @@ public class WorldGenerator : MonoBehaviour
                 chunks.Remove(chunk);
             }
         }
+    }
+
+    private float DistanceToNearestPath(Vector2 pos)
+    {
+        float shortest = float.MaxValue;
+
+        for(int i = 0; i < pointsOfInterest.Count; i++)
+        {
+            PointOfInterest poi1 = pointsOfInterest[i];
+            PointOfInterest poi2 = pointsOfInterest[(i + 1) % pointsOfInterest.Count];
+
+            Vector2 p0 = pos;
+            Vector2 p1 = poi1.Position;
+            Vector2 p2 = poi2.Position;
+
+            float d21X = p2.x - p1.x;
+            float d21Y = p2.y - p1.y;
+            float d = Mathf.Abs(
+                (p2.x - p1.x) * (p1.y - p0.y)
+                - (p1.x - p0.x) * (p2.y - p1.y)
+            ) / Mathf.Sqrt(
+                d21X * d21X
+                + d21Y * d21Y
+            ); //Distance from pos to the line
+
+            if(d < shortest) shortest = d;
+        }
+
+        return shortest;
     }
 }
