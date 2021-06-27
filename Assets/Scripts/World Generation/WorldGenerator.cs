@@ -20,6 +20,7 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float poiSpawnRadius = 500.0f;
     [SerializeField] private float pathWidth = 3.0f;
     [SerializeField] private float pathDensity = 0.5f;
+    [SerializeField] private float pathCurviness = 3.0f;
     [SerializeField] private Chunk chunkPrefab;
     private new Transform camera;
     private List<Chunk> chunks = new List<Chunk>();
@@ -74,10 +75,10 @@ public class WorldGenerator : MonoBehaviour
 		float d = DistanceToNearestPath(position);
         if(d < pathWidth && Random.value * d < pathDensity) return 1.0f;
 
-        if(position.sqrMagnitude < SPAWN_RADIUS * SPAWN_RADIUS) return 0.0f;
+		if (position.sqrMagnitude < SPAWN_RADIUS * SPAWN_RADIUS) return 0.0f;
 
-        Vector2 nPos = position / noiseZoom;
-        float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);
+		Vector2 nPos = position / noiseZoom;
+		float n = Mathf.PerlinNoise(nPos.x + PerlinOffset, nPos.y + PerlinOffset);
         return n;
     }
 
@@ -151,8 +152,8 @@ public class WorldGenerator : MonoBehaviour
             PointOfInterest poi2 = pointsOfInterest[(i + 1) % pointsOfInterest.Count];
 
             Vector2 p0 = pos;
-            Vector2 p1 = poi1.Position;
-            Vector2 p2 = poi2.Position;
+            Vector2 p1 = poi1.Position + new Vector2(Mathf.Sin(pos.x / noiseZoom), Mathf.Cos(pos.y / noiseZoom)) * pathCurviness;
+            Vector2 p2 = poi2.Position + new Vector2(Mathf.Cos(pos.x / noiseZoom), Mathf.Sin(pos.y / noiseZoom)) * pathCurviness;
 
             float d21X = p2.x - p1.x;
             float d21Y = p2.y - p1.y;
