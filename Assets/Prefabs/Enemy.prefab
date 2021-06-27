@@ -137,4 +137,5 @@ MonoBehaviour:
   maxHealth: 10
   patrolRadius: 10
   moveSpeed: 5
+  avoidanceRadius: 1.5
   rigidbody: {fileID: 2526650621553273298}
