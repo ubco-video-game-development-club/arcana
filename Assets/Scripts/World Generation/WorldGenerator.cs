@@ -30,7 +30,6 @@ public class WorldGenerator : MonoBehaviour
         {
             seed = Random.Range(System.Int32.MinValue, System.Int32.MaxValue);
             Debug.Log($"Generated seed {seed}");
-            Debug.Log(PerlinOffset);
         }
     }
 
