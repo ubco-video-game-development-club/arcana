@@ -7,6 +7,7 @@ public class GameManager : MonoBehaviour
 {
     public static GameManager Singleton { get; private set; }
     public static WorldGenerator WorldGenerator { get; private set; }
+    public static AStar AStar { get; private set; }
 
     [SerializeField] private Transform player1;
     public static Transform Player1 { get => Singleton.player1; }
@@ -18,6 +19,7 @@ public class GameManager : MonoBehaviour
     {
         Singleton = this;
         WorldGenerator = GetComponent<WorldGenerator>();
+        AStar = GetComponent<AStar>();
     }
 
     public static Transform GetOtherPlayer(Transform currentPlayer)

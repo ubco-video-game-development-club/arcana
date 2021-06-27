@@ -4,8 +4,6 @@ using UnityEngine;
 
 public class AStar : MonoBehaviour
 {
-    [SerializeField] private float nodeRadius = 1.5f;
-
     private HashSet<Node> nodes = new HashSet<Node>();
 
     public Vector2[] FindPath(Vector2 start, Vector2 end)
@@ -16,12 +14,12 @@ public class AStar : MonoBehaviour
         HashSet<Node> open = new HashSet<Node>();
         open.Add(startNode);
 
-        HashMap<Node, Node> cameFrom = new HashMap<Node, Node>();
+        Dictionary<Node, Node> cameFrom = new Dictionary<Node, Node>();
         
-        HashMap<Node, float> gScore = new HashMap<Node, float>();
+        Dictionary<Node, float> gScore = new Dictionary<Node, float>();
         gScore.Add(startNode, 0.0f);
 
-        HashMap<Node, float> fScore = new HashMap<Node, float>();
+        Dictionary<Node, float> fScore = new Dictionary<Node, float>();
         fScore.Add(startNode, Heuristic(startNode, endNode));
 
         while(open.Count > 0)
@@ -62,7 +60,7 @@ public class AStar : MonoBehaviour
     public void RemoveNode(Node node) => nodes.Remove(node);
     private float Heuristic(Node n, Node end) => (n.position - end.position).sqrMagnitude;
 
-    private Vector2[] ReconstructPath(HashMap<Node, Node> cameFrom, Node current)
+    private Vector2[] ReconstructPath(Dictionary<Node, Node> cameFrom, Node current)
     {
         List<Vector2> path = new List<Vector2>();
         path.Add(current.position);
@@ -70,7 +68,7 @@ public class AStar : MonoBehaviour
         while(cameFrom.ContainsKey(current))
         {
             current = cameFrom[current];
-            path.Add(current);
+            path.Add(current.position);
         }
 
         path.Reverse();
@@ -78,11 +76,13 @@ public class AStar : MonoBehaviour
     }
 
     //This is slow but I didn't feel like implementing a priority queue
-    private Node FindNodeWithLowestFScore(HashSet<Node> set, HashMap<Node, float> fScores)
+    private Node FindNodeWithLowestFScore(HashSet<Node> set, Dictionary<Node, float> fScores)
     {
-        Node lowest = set[0];
+        Node lowest = default;
         foreach(Node node in set)
         {
+            if(lowest == default) lowest = node;
+
             if(fScores.ContainsKey(lowest) && fScores.ContainsKey(node))
             {
                 if(fScores[node] < fScores[lowest])
@@ -100,7 +100,7 @@ public class AStar : MonoBehaviour
 
     private Node FindNearestNodeTo(Vector2 position)
     {
-        Node nearest = nodes[0];
+        Node nearest = default;
         foreach(Node node in nodes)
         {
             Vector2 d1 = position - node.position;
