@@ -15,9 +15,12 @@ public class WorldGenerator : MonoBehaviour
     [SerializeField] private float noiseZoom = 16.0f;
     [SerializeField] private float treeRarity = 5.0f;
     [SerializeField] private float treeThreshold = 0.5f;
+    [SerializeField] private int maxPoiPerType = 5;
+    [SerializeField] private int poiSpawnRadius = 500.0f;
     [SerializeField] private Chunk chunkPrefab;
     private new Transform camera;
     private List<Chunk> chunks = new List<Chunk>();
+    private List<PointOfInterest> pointsOfInterest = new List<PointOfInterest>();
 
     void Awake()
     {
@@ -32,6 +35,7 @@ public class WorldGenerator : MonoBehaviour
             Debug.Log($"Generated seed {seed}");
         }
 
+        Random.InitState(seed);
         GeneratePointsOfInterest();
         GeneratePaths();
     }
@@ -81,7 +85,19 @@ public class WorldGenerator : MonoBehaviour
 
     private void GeneratePointsOfInterest()
     {
-
+        int poiCount = (int)PointOfInterestType.COUNT;
+        
+        for(int poi = 0; poi < poiCount; poi++)
+        {
+            PointOfInterestType currentType = (PointOfInterestType)poi;
+            int spawnCount = Random.Range(1, maxPoIPerType);
+            for(int i = 0; i < spawnCount; i++)
+            {
+                Vector2 pos = Random.insideUnitCircle * poiSpawnRadius;
+                PointOfInterest poi = new PointOfInterest(pos, currentType);
+                pointsOfInterest.Add(poi);
+            }
+        }
     }
 
     private void GeneratePaths()
