@@ -1,0 +1,33 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c5f30373602fed344897704f29e12900, type: 3}
+  m_Name: Wand Attack
+  m_EditorClassIdentifier: 
+  cooldown: 1
+  wandEffects:
+  - procWeight: 4
+    projectilePrefab: {fileID: 1838450099400349926, guid: 0bfa9744c2fbdad48bb3dddf5f30caca, type: 3}
+    castEffect: {fileID: 3883908298788582449, guid: 47129b57bc624114a898e674ed38d3f7, type: 3}
+    damage: 2
+    range: 3
+    knockback: 3
+    speed: 6
+  - procWeight: 1
+    projectilePrefab: {fileID: 7581564313534179703, guid: 2918451968bb96542a67a5915fb27546, type: 3}
+    castEffect: {fileID: 3883908298788582449, guid: 47129b57bc624114a898e674ed38d3f7, type: 3}
+    damage: 5
+    range: 5
+    knockback: 8
+    speed: 8
+  enemyLayer:
+    serializedVersion: 2
+    m_Bits: 128

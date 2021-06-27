@@ -7,7 +7,7 @@ public class PunchAttack : PlayerAttack
     [SerializeField] private float reach;
     [SerializeField] private float knockback;
     [SerializeField] private float hitboxRadius;
-    [SerializeField] private LayerMask enemyLayers;
+    [SerializeField] private LayerMask enemyLayer;
 
     public override void Invoke(AttackData data)
     {
@@ -15,14 +15,13 @@ public class PunchAttack : PlayerAttack
         float moddedReach = reach + data.reachMod;
         float moddedKnockback = knockback + data.knockbackMod;
 
-        RaycastHit2D hit = Physics2D.CircleCast(data.origin, hitboxRadius, data.direction, moddedReach - hitboxRadius, enemyLayers);
+        RaycastHit2D hit = Physics2D.CircleCast(data.origin, hitboxRadius, data.direction, moddedReach - hitboxRadius, enemyLayer);
         if (hit && hit.transform.TryGetComponent<Enemy>(out Enemy enemy))
         {
             bool killedTarget = enemy.TakeDamage(moddedDamage);
             if (!killedTarget)
             {
-                Vector2 pushForce = data.direction * moddedKnockback;
-                enemy.Knockback(pushForce);
+                enemy.Knockback(data.direction * moddedKnockback);
             }
         }
     }

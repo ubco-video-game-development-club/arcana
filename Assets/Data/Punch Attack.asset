@@ -15,8 +15,8 @@ MonoBehaviour:
   cooldown: 0.4
   damage: 4
   reach: 1.2
-  knockback: 2
+  knockback: 5
   hitboxRadius: 0.5
-  enemyLayers:
+  enemyLayer:
     serializedVersion: 2
     m_Bits: 128

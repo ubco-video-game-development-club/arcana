@@ -76,7 +76,7 @@ public class Player : MonoBehaviour
         AttackData data = new AttackData();
         data.origin = transform.position;
         Vector2 mousePos = Camera.main.ScreenToWorldPoint(Mouse.current.position.ReadValue());
-        data.direction = mousePos - data.origin;
+        data.direction = (mousePos - data.origin).normalized;
         // TODO: read damage mods from artifacts here
         return data;
     }
