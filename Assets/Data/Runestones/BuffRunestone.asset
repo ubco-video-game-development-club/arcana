@@ -1,0 +1,19 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: e0a52ff8cad400a429c3e86203c7a434, type: 3}
+  m_Name: BuffRunestone
+  m_EditorClassIdentifier: 
+  title: Buff Runestone
+  desc: This runestone gives a buff.
+  inactiveHudIcon: {fileID: 21300000, guid: e466de1813bf9144e9cb07e93046130e, type: 3}
+  activeHudIcon: {fileID: 21300000, guid: 875466681fd8a6c4a99f9fcb6ac3104f, type: 3}
+  runestoneType: 0

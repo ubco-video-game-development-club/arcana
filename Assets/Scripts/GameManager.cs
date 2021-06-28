@@ -8,6 +8,7 @@ public class GameManager : MonoBehaviour
     public static GameManager Singleton { get; private set; }
     public static WorldGenerator WorldGenerator { get; private set; }
     public static AStar AStar { get; private set; }
+    public static ProgressionSystem ProgressionSystem { get; private set; }
 
     [SerializeField] private Player player1;
     public static Player Player1 { get => Singleton.player1; }
@@ -20,6 +21,7 @@ public class GameManager : MonoBehaviour
         Singleton = this;
         WorldGenerator = GetComponent<WorldGenerator>();
         AStar = GetComponent<AStar>();
+        ProgressionSystem = GetComponent<ProgressionSystem>();
     }
 
     public static Player GetOtherPlayer(Player currentPlayer)
