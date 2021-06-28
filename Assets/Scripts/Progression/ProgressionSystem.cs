@@ -1,6 +1,7 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.Events;
 
 public class ProgressionSystem : MonoBehaviour
 {
@@ -9,7 +10,14 @@ public class ProgressionSystem : MonoBehaviour
     public bool HasBlessingRune { get; private set; }
     public bool HasKeyRune { get; private set; }
 
+    public UnityEvent<Runestone> OnRunestoneAcquired { get; private set; }
+
     private List<Runestone> runestones = new List<Runestone>();
+
+    void Awake()
+    {
+        OnRunestoneAcquired = new UnityEvent<Runestone>();
+    }
 
     public void AcquireRunestone(Runestone runestone)
     {
@@ -29,5 +37,6 @@ public class ProgressionSystem : MonoBehaviour
                 HasBlessingRune = true;
                 break;
         }
+        OnRunestoneAcquired.Invoke(runestone);
     }
 }

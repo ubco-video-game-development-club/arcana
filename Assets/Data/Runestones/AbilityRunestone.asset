@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Ability Runestone
   desc: This runestone grants an ability.
-  hudIcon: {fileID: 21300000, guid: 322b47b3d428f9f43a6f816ccb22bcfb, type: 3}
+  inactiveHudIcon: {fileID: 21300000, guid: 07c51518ff34b2e46a18363761ad5890, type: 3}
+  activeHudIcon: {fileID: 21300000, guid: 5c3f4cd17f7aaf0429a5443be190df62, type: 3}
   runestoneType: 1

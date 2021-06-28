@@ -14,5 +14,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   title: Key Runestone
   desc: This runestone acts as a universal key.
-  hudIcon: {fileID: 21300000, guid: 875466681fd8a6c4a99f9fcb6ac3104f, type: 3}
+  inactiveHudIcon: {fileID: 21300000, guid: 6dc9f246700e0ec4f90b5547bf91b56f, type: 3}
+  activeHudIcon: {fileID: 21300000, guid: e0cb98fe18dc907489590195b8807bce, type: 3}
   runestoneType: 2

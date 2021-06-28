@@ -11,8 +11,11 @@ public class Runestone : ScriptableObject
     [SerializeField] private string desc;
     public string Desc { get => desc; }
 
-    [SerializeField] private Sprite hudIcon;
-    public Sprite HudIcon { get => hudIcon; }
+    [SerializeField] private Sprite inactiveHudIcon;
+    public Sprite InactiveHudIcon { get => inactiveHudIcon; }
+
+    [SerializeField] private Sprite activeHudIcon;
+    public Sprite ActiveHudIcon { get => activeHudIcon; }
 
     [SerializeField] private RunestoneType runestoneType;
     public RunestoneType RunestoneType { get => runestoneType; }
